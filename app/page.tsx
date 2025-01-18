@@ -1,6 +1,4 @@
-import CategoryList from "./_components/category-list";
 import Header from "./_components/header";
-import Search from "./_components/search";
 import ProductsList from "./_components/products-list";
 import { Button } from "./_components/ui/button";
 import Link from "next/link";
@@ -42,16 +40,23 @@ export default async function Home() {
       },
     });
 
-    const [products, burgersCategory, pizzasCategory] = await Promise.all([
-      getProducts,
-      getBurgersCategory,
-      getPizzasCategory,
-    ]);
+    const getRestaurants = db.restaurant.findMany({
+      take: 4,
+    });
 
-    return { products, burgersCategory, pizzasCategory };
+    const [products, burgersCategory, pizzasCategory, restaurants] =
+      await Promise.all([
+        getProducts,
+        getBurgersCategory,
+        getPizzasCategory,
+        getRestaurants,
+      ]);
+
+    return { products, burgersCategory, pizzasCategory, restaurants };
   };
 
-  const { burgersCategory, pizzasCategory, products } = await fetch();
+  const { burgersCategory, pizzasCategory, products, restaurants } =
+    await fetch();
 
   return (
     <>
@@ -145,7 +150,7 @@ export default async function Home() {
             </div>
           </Button>
         </div>
-        <RestaurantList />
+        <RestaurantList restaurantsProps={restaurants} />
       </div>
     </>
   );

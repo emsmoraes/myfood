@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Restaurant, UserFavoriteRestaurant } from "@prisma/client";
 import Image from "next/image";
 import { BikeIcon, HeartIcon, StarIcon, TimerIcon } from "lucide-react";
@@ -24,6 +24,7 @@ function RestaurantItem({
   className,
   userFavoritesRestaurants,
 }: RestaurantItemProps) {
+  const [average, setAverage] = useState<number | null>();
   const isFavorite = isRestaurantCurrentlyFavorite(
     userFavoritesRestaurants,
     restaurant.id,
@@ -31,12 +32,20 @@ function RestaurantItem({
 
   const { data } = useSession();
 
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   const { handleFavoriteClick } = useFavoriteRestaurant({
     restaurantId: restaurant.id,
     isFavorite: isFavorite,
     userId: data?.user.id,
   });
+
+  useEffect(() => {
+    const getAverage = async () => {
+      const average = await calculateAverage(restaurant.id);
+      setAverage(average);
+    };
+
+    getAverage();
+  }, [restaurant.id]);
 
   return (
     <div
@@ -60,7 +69,7 @@ function RestaurantItem({
           <div className="absolute left-2 top-2 flex items-center gap-[2px] rounded-full bg-primary-foreground px-2 py-[2px] text-black">
             <StarIcon size={12} className="fill-yellow-500 text-yellow-500" />
             <span className="text-xs font-semibold">
-              {calculateAverage(restaurant.id)}
+              {average}
               .0
             </span>
           </div>

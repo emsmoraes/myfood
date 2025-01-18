@@ -3,7 +3,6 @@ import { notFound } from "next/navigation";
 import React from "react";
 import ProductImage from "./_components/product-image";
 import ProductDetail from "./_components/product-detail";
-import ArrowBack from "@/app/_components/arrow-back";
 
 interface ProductsProps {
   params: {
@@ -45,7 +44,6 @@ async function Products({ params }: ProductsProps) {
         <ProductImage product={product} />
       </div>
 
-      {/* TITULO E PREÇO */}
       <ProductDetail product={product} complementaryProducts={juices} />
     </div>
   );
