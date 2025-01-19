@@ -8,13 +8,15 @@ import { db } from "@/app/_lib/prisma";
 import { notFound } from "next/navigation";
 import React from "react";
 interface CategoriesPageProps {
-  id: string;
+  params: {
+    id: string;
+  };
 }
 
-async function CategoriesPage({ id }: CategoriesPageProps) {
+async function CategoriesPage({ params }: CategoriesPageProps) {
   const category = await db.category.findUnique({
     where: {
-      id: id,
+      id: params.id,
     },
     include: {
       products: {
