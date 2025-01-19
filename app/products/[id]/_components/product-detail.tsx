@@ -4,19 +4,13 @@ import DeliveryDetail from "@/app/_components/delivery-detail";
 import DiscountBadge from "@/app/_components/discount-badge";
 import ProductsList from "@/app/_components/products-list";
 import { Button } from "@/app/_components/ui/button";
-import { Card } from "@/app/_components/ui/card";
 import { CartContext } from "@/app/_contexts/cart";
 import {
   calculateProductTotalPrice,
   formatCurrency,
 } from "@/app/_helpers/price";
-import { Prisma, Product } from "@prisma/client";
-import {
-  BikeIcon,
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  TimerIcon,
-} from "lucide-react";
+import { Prisma } from "@prisma/client";
+import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import Image from "next/image";
 import React, { useContext, useState } from "react";
 import {
@@ -35,10 +29,8 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "@/app/_components/ui/alert-dialog";
 import { convertObjectWithDecimal } from "@/app/_helpers/convert-object-with-decimal";
-import { TiStarFullOutline } from "react-icons/ti";
 import Header from "@/app/_components/header";
 import CartBanner from "@/app/restaurants/[id]/_components/cart-banner";
 import ArrowBack from "@/app/_components/arrow-back";
@@ -179,7 +171,9 @@ function ProductDetail({ product, complementaryProducts }: ProductDetailProps) {
 
         <div className="my-6 space-y-3">
           <h3 className="px-5 font-semibold">Sucos</h3>
-          <ProductsList products={complementaryProducts} />
+          <ProductsList
+            products={JSON.parse(JSON.stringify(complementaryProducts))}
+          />
         </div>
 
         <div className="mb-20 mt-6 px-5">

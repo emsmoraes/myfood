@@ -41,10 +41,13 @@ async function Products({ params }: ProductsProps) {
   return (
     <div>
       <div className="laptop:hidden">
-        <ProductImage product={product} />
+        <ProductImage product={JSON.parse(JSON.stringify(product))} />
       </div>
 
-      <ProductDetail product={product} complementaryProducts={juices} />
+      <ProductDetail
+        product={JSON.parse(JSON.stringify(product))}
+        complementaryProducts={JSON.parse(JSON.stringify(juices))}
+      />
     </div>
   );
 }
