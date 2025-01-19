@@ -8,9 +8,11 @@ import { db } from "@/app/_lib/prisma";
 import { notFound } from "next/navigation";
 import React from "react";
 interface CategoriesPageProps {
-  params: {
-    id: string;
-  };
+  params:
+    | {
+        id: string;
+      }
+    | any;
 }
 
 async function CategoriesPage({ params }: CategoriesPageProps) {
