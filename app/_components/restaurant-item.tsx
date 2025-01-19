@@ -7,11 +7,11 @@ import { formatCurrency } from "../_helpers/price";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import { cn } from "../_lib/utils";
-import { useToast } from "@/app/_components/ui/use-toast";
 import { useSession } from "next-auth/react";
 import { isRestaurantCurrentlyFavorite } from "../_helpers/restaurant";
 import useFavoriteRestaurant from "../_hooks/use-favorite-restaurant";
 import { calculateAverage } from "../_actions/calculate-average";
+import { TbLoader2 } from "react-icons/tb";
 
 interface RestaurantItemProps {
   restaurant: Restaurant;
@@ -32,7 +32,7 @@ function RestaurantItem({
 
   const { data } = useSession();
 
-  const { handleFavoriteClick } = useFavoriteRestaurant({
+  const { handleFavoriteClick, isPending } = useFavoriteRestaurant({
     restaurantId: restaurant.id,
     isFavorite: isFavorite,
     userId: data?.user.id,
@@ -86,7 +86,11 @@ function RestaurantItem({
               size={"icon"}
               onClick={handleFavoriteClick}
             >
-              <HeartIcon size={17} className="fill-white" />
+              {isPending ? (
+                <TbLoader2 className="animate-spin text-white" size={17} />
+              ) : (
+                <HeartIcon size={17} className="fill-white" />
+              )}
             </Button>
           )}
         </div>

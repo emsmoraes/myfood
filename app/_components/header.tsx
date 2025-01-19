@@ -9,7 +9,6 @@ import {
   Loader2,
   LogInIcon,
   LogOutIcon,
-  MenuIcon,
   ScrollTextIcon,
 } from "lucide-react";
 import Link from "next/link";
@@ -25,6 +24,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Separator } from "./ui/separator";
 import NavLink from "./nav-link";
 import Search from "./search";
+import { FiMenu } from "react-icons/fi";
 
 interface HeaderProps {
   search?: boolean;
@@ -49,17 +49,9 @@ function Header({ search = true, searchParams }: HeaderProps) {
   const isLogged = data?.user ? true : false;
 
   return (
-    <div className="flex justify-between px-5 pb-4 pt-4 laptop:px-44">
+    <div className="flex items-center justify-between px-5 pb-4 pt-4 laptop:px-44">
       <Link href={"/"}>
-        <div className="relative h-[30px] w-[100px]">
-          <Image
-            src="/logo.png"
-            alt="iclone"
-            sizes="100%"
-            fill
-            className="object-cover"
-          />
-        </div>
+        <Image src="/logo.png" alt="iclone" width={50} height={50} />
       </Link>
 
       {search && (
@@ -77,9 +69,9 @@ function Header({ search = true, searchParams }: HeaderProps) {
           <Button
             size={"icon"}
             variant={"outline"}
-            className="border-none bg-transparent"
+            className="border-none bg-transparent [&_svg]:size-6"
           >
-            <MenuIcon />
+            <FiMenu />
           </Button>
         </SheetTrigger>
 

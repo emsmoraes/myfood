@@ -9,6 +9,7 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React from "react";
+import { TbLoader2 } from "react-icons/tb";
 
 interface ProductImageProps {
   restaurant: Pick<Restaurant, "id" | "imageUrl" | "name">;
@@ -32,7 +33,7 @@ function RestaurantImage({
     restaurant.id,
   );
 
-  const { handleFavoriteClick } = useFavoriteRestaurant({
+  const { handleFavoriteClick, isPending } = useFavoriteRestaurant({
     restaurantId: restaurant.id,
     isFavorite: isFavorite,
     userId: data?.user.id,
@@ -66,7 +67,11 @@ function RestaurantImage({
         onClick={handleFavoriteClick}
         size={"icon"}
       >
-        <HeartIcon size={20} className="fill-white" />
+        {isPending ? (
+          <TbLoader2 className="animate-spin text-white" size={20} />
+        ) : (
+          <HeartIcon size={20} className="fill-white" />
+        )}
       </Button>
     </div>
   );

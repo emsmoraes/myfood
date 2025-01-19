@@ -10,7 +10,6 @@ import ReactStars from "react-stars";
 import React, { useState } from "react";
 import { Button } from "../../../_components/ui/button";
 import { z } from "zod";
-import { notFound } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
@@ -21,8 +20,7 @@ import {
 } from "../../../_components/ui/form";
 import { useForm } from "react-hook-form";
 import { sendReview } from "../_actions/user-review";
-import { useSession } from "next-auth/react";
-import { Loader2, LogOutIcon } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { toast } from "../../../_components/ui/use-toast";
 
 const formSchema = z.object({
@@ -120,10 +118,9 @@ function ReviewRestaurantSheet({
                   <ReactStars
                     {...field}
                     count={5}
-                    size={34}
+                    size={32}
                     color1="rgba(236, 51, 64, 0.6)"
                     color2="#EC3340"
-                    className="h-[36px] "
                     half={false}
                   />
                 </FormControl>

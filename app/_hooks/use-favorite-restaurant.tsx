@@ -1,3 +1,6 @@
+"use client";
+
+import { useTransition } from "react";
 import {
   favoriteRestaurant,
   unfavoriteRestaurant,
@@ -15,27 +18,27 @@ const useFavoriteRestaurant = ({
   isFavorite,
   userId,
 }: UseFavoriteRestaurantProps) => {
+  const [isPending, setIsPending] = useTransition();
+
   const handleFavoriteClick = async () => {
     if (!userId) return;
 
-    try {
-      if (isFavorite) {
-        await unfavoriteRestaurant(userId, restaurantId);
-        return toast({ title: "Restaurante removido dos favoritos" });
-      }
-
+    setIsPending(async () => {
       try {
-        await favoriteRestaurant(userId, restaurantId);
-        toast({ title: "Restaurante favoritado com sucesso!" });
+        if (isFavorite) {
+          await unfavoriteRestaurant(userId, restaurantId);
+          toast({ title: "Restaurante removido dos favoritos" });
+        } else {
+          await favoriteRestaurant(userId, restaurantId);
+          toast({ title: "Restaurante favoritado com sucesso!" });
+        }
       } catch (error) {
         toast({ title: "Erro ao favoritar o restaurante" });
       }
-    } catch (error) {
-      toast({ title: "Erro ao favoritar o restaurante" });
-    }
+    });
   };
 
-  return { handleFavoriteClick };
+  return { handleFavoriteClick, isPending };
 };
 
 export default useFavoriteRestaurant;

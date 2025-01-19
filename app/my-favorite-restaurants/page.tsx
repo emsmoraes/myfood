@@ -39,7 +39,9 @@ async function MyFavoriteRestaurants() {
                   key={restaurant.restaurant.id}
                   restaurant={convertObjectWithDecimal(restaurant.restaurant)}
                   className="min-w-full max-w-full"
-                  userFavoritesRestaurants={userFavoriteRestaurants}
+                  userFavoritesRestaurants={convertObjectWithDecimal(
+                    userFavoriteRestaurants,
+                  )}
                 />
               ))}
             </div>
@@ -50,7 +52,9 @@ async function MyFavoriteRestaurants() {
                   key={restaurant.restaurant.id}
                   restaurant={convertObjectWithDecimal(restaurant.restaurant)}
                   className="min-w-full max-w-full"
-                  userFavoritesRestaurants={userFavoriteRestaurants}
+                  userFavoritesRestaurants={convertObjectWithDecimal(
+                    userFavoriteRestaurants,
+                  )}
                 />
               ))}
             </div>
