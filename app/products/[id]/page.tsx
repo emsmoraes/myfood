@@ -5,15 +5,17 @@ import ProductImage from "./_components/product-image";
 import ProductDetail from "./_components/product-detail";
 
 interface ProductsProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 async function Products({ params }: ProductsProps) {
+  const resolvedParams = await params;
+
   const product = await db.product.findUnique({
     where: {
-      id: params.id,
+      id: resolvedParams.id,
     },
     include: {
       restaurant: true,

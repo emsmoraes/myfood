@@ -1,22 +1,22 @@
 import ArrowBack from "@/app/_components/arrow-back";
 import Header from "@/app/_components/header";
 import ProductItem from "@/app/_components/product-item";
-import ProductsList from "@/app/_components/products-list";
-import RestaurantItem from "@/app/_components/restaurant-item";
 import RestaurantList from "@/app/_components/restaurant-list";
 import { db } from "@/app/_lib/prisma";
 import { notFound } from "next/navigation";
 import React from "react";
 interface CategoriesPageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 async function CategoriesPage({ params }: CategoriesPageProps) {
+  const resolvedParams = await params;
+
   const category = await db.category.findUnique({
     where: {
-      id: params.id,
+      id: resolvedParams.id,
     },
     include: {
       products: {

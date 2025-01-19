@@ -15,16 +15,18 @@ import { TiStarFullOutline } from "react-icons/ti";
 import ArrowBack from "@/app/_components/arrow-back";
 import { Sheet, SheetTrigger } from "@/app/_components/ui/sheet";
 import ReviewRestaurantTrigger from "./_components/review-restaurant-trigger";
-interface RestaurantPageProps {
-  params: {
+interface ProductsProps {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
-async function RestaurantPage({ params }: RestaurantPageProps) {
+async function RestaurantPage({ params }: ProductsProps) {
+  const resolvedParams = await params;
+
   const restaurant = await db.restaurant.findUnique({
     where: {
-      id: params.id,
+      id: resolvedParams.id,
     },
     include: {
       categories: {
@@ -34,7 +36,7 @@ async function RestaurantPage({ params }: RestaurantPageProps) {
         include: {
           products: {
             where: {
-              restaurantId: params.id,
+              restaurantId: resolvedParams.id,
             },
             include: {
               restaurant: {

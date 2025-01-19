@@ -5,35 +5,41 @@ import { authOptions } from "../_lib/auth";
 import { db } from "../_lib/prisma";
 import { convertObjectWithDecimal } from "../_helpers/convert-object-with-decimal";
 
+type SearchParams = Promise<{ search?: string | string[] }>;
+
 async function RestaurantsPage({
   searchParams,
 }: {
-  searchParams?: { [key: string]: string | string[] | undefined };
+  searchParams: SearchParams;
 }) {
   const session = await getServerSession(authOptions);
-  const search = searchParams?.search || "";
+  const params = await searchParams;
+  const search = Array.isArray(params?.search)
+    ? params.search[0] || ""
+    : params?.search || "";
 
-  const restaurants = await db.restaurant.findMany({
-    where: {
-      name: {
-        contains: search as string,
-        mode: "insensitive",
+  const [restaurants, userFavoritesRestaurants] = await Promise.all([
+    db.restaurant.findMany({
+      where: {
+        name: {
+          contains: search,
+          mode: "insensitive",
+        },
       },
-    },
-  });
-
-  const userFavoritesRestaurants = await db.userFavoriteRestaurant.findMany({
-    where: {
-      userId: session?.user?.id,
-    },
-  });
+    }),
+    db.userFavoriteRestaurant.findMany({
+      where: {
+        userId: session?.user?.id,
+      },
+    }),
+  ]);
 
   return (
     <Suspense>
       <Restaurants
         userFavoritesRestaurants={userFavoritesRestaurants}
         restaurants={convertObjectWithDecimal(restaurants)}
-        search={search as string}
+        search={search}
       />
     </Suspense>
   );
